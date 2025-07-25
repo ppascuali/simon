@@ -1,0 +1,4 @@
+Rojo: RE 440
+Verde: DO 440
+Azul: FA 440
+Amarillo: MI 440

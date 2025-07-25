@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego Simon</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Juego Simon</h1>
+  <div id="player-controls">
+    <label for="player-name">Jugador: Tu nombre <span class="required">(Obligatorio)</span></label>
+    <input type="text" id="player-name" maxlength="20" placeholder="Tu nombre" />
+  </div>
+  <div id="game-container">
+    <div id="message"></div>
+    <div class="simon-board">
+      <button class="color-btn" id="green"></button>
+      <button class="color-btn" id="red"></button>
+      <button class="color-btn" id="yellow"></button>
+      <button class="color-btn" id="blue"></button>
+    </div>
+    <div id="controls">
+      <button id="start-btn">Comenzar</button>
+      <button id="repeat-btn" disabled>
+        <span class="icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 10a6 6 0 0 1 10.39-4.19" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="14 2 14 6 10 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 10a6 6 0 0 1-10.39 4.19" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="6 18 6 14 10 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Repetir Secuencia
+      </button>
+      <span id="level">Nivel: 0</span>
+      <span id="record">Récord: 0</span>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html> 
