@@ -89,6 +89,8 @@ let recordHolder = '';
 let record = 0;
 // Variable para el nombre del jugador
 let playerName = '';
+// Variable para rastrear si se superó el récord durante el juego actual
+let recordBeatenThisGame = false;
 
 // Cargar nombre y récord desde localStorage al iniciar
 function loadRecord() {
@@ -115,14 +117,9 @@ function saveRecord() {
 function nextLevel() {
   level++;
   levelSpan.textContent = `Nivel: ${level}`;
+  // Verifica si se superó el récord pero no actualiza inmediatamente
   if (level > record) {
-    record = level;
-    recordHolder = playerNameInput.value.trim() || 'Jugador';
-    saveRecord();
-    // Animación de récord
-    recordSpan.classList.add('flash-record');
-    playVictoryMelody();
-    setTimeout(() => recordSpan.classList.remove('flash-record'), 600);
+    recordBeatenThisGame = true; // Marca que se superó el récord en este juego
   }
   // Agrega un color aleatorio a la secuencia
   sequence.push(colors[Math.floor(Math.random() * 4)]);
@@ -192,6 +189,18 @@ function checkUserInput() {
     repeatBtn.disabled = false; // Habilita el botón de repetir
     waitingForInput = false;
     disableColorButtons(); // Deshabilita los botones de colores cuando el usuario pierde
+    
+    // Verifica si se superó el récord al final del juego
+    if (recordBeatenThisGame) {
+      record = level; // Actualiza el récord con el nivel alcanzado
+      recordHolder = playerNameInput.value.trim() || 'Jugador';
+      saveRecord();
+      // Animación de récord y melodía de victoria
+      recordSpan.classList.add('flash-record');
+      playVictoryMelody();
+      setTimeout(() => recordSpan.classList.remove('flash-record'), 600);
+    }
+    
     // Animación de pérdida y mensaje
     const gameContainer = document.getElementById('game-container');
     messageDiv.textContent = '¡Perdiste!';
@@ -217,6 +226,7 @@ function resetGame() {
   waitingForInput = false;
   repeatBtn.disabled = true; // Deshabilita el botón de repetir
   disableColorButtons(); // Deshabilita los botones de colores al reiniciar
+  recordBeatenThisGame = false; // Resetea la bandera de récord superado
   updateRecordDisplay();
   messageDiv.textContent = '';
 }
