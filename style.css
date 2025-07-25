@@ -55,12 +55,15 @@ h1 {
 
 #controls {
   display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
   align-items: center;
-  gap: 20px;
+  justify-content: center; /* Centra los elementos */
+  gap: 15px; /* Reduce el espacio entre elementos */
+  max-width: 100%; /* Asegura que no se desborde */
 }
 
 #start-btn {
-  padding: 10px 24px;
+  padding: 12px 20px; /* Aumenta el padding para mejor toque en móviles */
   font-size: 1rem;
   border: none;
   border-radius: 8px;
@@ -68,6 +71,7 @@ h1 {
   color: #fff;
   cursor: pointer;
   transition: background 0.2s;
+  min-width: 100px; /* Ancho mínimo para el botón */
 }
 
 #start-btn:hover {
@@ -80,12 +84,13 @@ h1 {
 }
 
 #level {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Reduce ligeramente el tamaño de fuente */
   font-weight: bold;
+  white-space: nowrap; /* Evita que el texto se rompa */
 }
 
 #repeat-btn {
-  padding: 10px 24px;
+  padding: 12px 20px; /* Aumenta el padding para mejor toque en móviles */
   font-size: 1rem;
   border: none;
   border-radius: 8px;
@@ -97,6 +102,8 @@ h1 {
   align-items: center;
   gap: 8px;
   opacity: 0.7;
+  min-width: 140px; /* Ancho mínimo para el botón */
+  white-space: nowrap; /* Evita que el texto se rompa */
 }
 #repeat-btn:enabled {
   opacity: 1;
@@ -173,10 +180,85 @@ h1 {
   width: 120px;
 }
 #record {
-  margin-left: 10px;
+  margin-left: 0; /* Elimina el margen izquierdo ya que usamos gap */
+  white-space: nowrap; /* Evita que el texto se rompa */
 }
 .required {
   color: #ff4136;
   font-size: 0.95em;
   margin-left: 4px;
+} 
+
+/* Estilos específicos para dispositivos móviles */
+@media (max-width: 768px) {
+  #game-container {
+    padding: 20px 15px; /* Reduce el padding en móviles */
+    margin: 10px;
+  }
+  
+  .simon-board {
+    grid-template-columns: repeat(2, 80px); /* Reduce el tamaño de los botones */
+    grid-template-rows: repeat(2, 80px);
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .color-btn {
+    width: 80px;
+    height: 80px;
+  }
+  
+  #controls {
+    flex-direction: column; /* Organiza los controles verticalmente en móviles */
+    gap: 12px;
+  }
+  
+  #start-btn, #repeat-btn {
+    width: 100%; /* Los botones ocupan todo el ancho disponible */
+    max-width: 200px; /* Pero con un ancho máximo */
+    justify-content: center; /* Centra el contenido del botón */
+  }
+  
+  #level, #record {
+    font-size: 1rem; /* Reduce el tamaño de fuente en móviles */
+  }
+  
+  h1 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 1.5rem; /* Reduce el tamaño del título */
+  }
+  
+  #player-controls {
+    flex-direction: column; /* Organiza los controles del jugador verticalmente */
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+  
+  #player-name {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .simon-board {
+    grid-template-columns: repeat(2, 70px); /* Reduce aún más el tamaño */
+    grid-template-rows: repeat(2, 70px);
+    gap: 12px;
+  }
+  
+  .color-btn {
+    width: 70px;
+    height: 70px;
+  }
+  
+  #game-container {
+    padding: 15px 10px;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
 } 
