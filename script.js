@@ -38,7 +38,7 @@ function playSound(color) {
   o.connect(g);
   g.connect(audioCtx.destination);
   o.start();
-  o.stop(audioCtx.currentTime + 0.3);
+  o.stop(audioCtx.currentTime + 0.1);
 }
 
 // Secuencia de sonidos de victoria cuando se bate el récord
@@ -122,7 +122,7 @@ function nextLevel() {
     // Animación de récord
     recordSpan.classList.add('flash-record');
     playVictoryMelody();
-    setTimeout(() => recordSpan.classList.remove('flash-record'), 2000);
+    setTimeout(() => recordSpan.classList.remove('flash-record'), 600);
   }
   // Agrega un color aleatorio a la secuencia
   sequence.push(colors[Math.floor(Math.random() * 4)]);
@@ -130,15 +130,33 @@ function nextLevel() {
   playSequence();
 }
 
+// Función para habilitar todos los botones de colores
+function enableColorButtons() {
+  colorBtns.forEach(btn => {
+    btn.disabled = false;
+    btn.style.cursor = 'pointer';
+  });
+}
+
+// Función para deshabilitar todos los botones de colores
+function disableColorButtons() {
+  colorBtns.forEach(btn => {
+    btn.disabled = true;
+    btn.style.cursor = 'not-allowed';
+  });
+}
+
 // Muestra la secuencia de colores al usuario, uno por uno
 function playSequence() {
   waitingForInput = false; // Bloquea la entrada del usuario mientras se muestra la secuencia
   repeatBtn.disabled = true; // Deshabilita el botón de repetir mientras se muestra la secuencia
+  disableColorButtons(); // Deshabilita los botones de colores durante la reproducción
   let i = 0;
   const interval = setInterval(() => {
     if (i >= sequence.length) {
       clearInterval(interval);
       waitingForInput = true; // Ahora el usuario puede jugar
+      enableColorButtons(); // Habilita los botones de colores para que el usuario pueda jugar
       return;
     }
     const color = sequence[i];
@@ -173,6 +191,7 @@ function checkUserInput() {
   if (userSequence[idx] !== sequence[idx]) {
     repeatBtn.disabled = false; // Habilita el botón de repetir
     waitingForInput = false;
+    disableColorButtons(); // Deshabilita los botones de colores cuando el usuario pierde
     // Animación de pérdida y mensaje
     const gameContainer = document.getElementById('game-container');
     messageDiv.textContent = '¡Perdiste!';
@@ -180,12 +199,12 @@ function checkUserInput() {
     setTimeout(() => {
       gameContainer.classList.remove('lost');
       messageDiv.textContent = '';
-    }, 1400);
+    }, 500);
     return;
   }
   // Si el usuario completó la secuencia correctamente, pasa al siguiente nivel
   if (userSequence.length === sequence.length) {
-    setTimeout(nextLevel, 1000);
+    setTimeout(nextLevel, 500);
   }
 }
 
@@ -197,6 +216,7 @@ function resetGame() {
   levelSpan.textContent = "Nivel: 0";
   waitingForInput = false;
   repeatBtn.disabled = true; // Deshabilita el botón de repetir
+  disableColorButtons(); // Deshabilita los botones de colores al reiniciar
   updateRecordDisplay();
   messageDiv.textContent = '';
 }

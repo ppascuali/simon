@@ -53,6 +53,19 @@ h1 {
   box-shadow: 0 0 24px 8px #fff;
 }
 
+/* Estilos para botones deshabilitados */
+.color-btn:disabled {
+  opacity: 0.4; /* Reduce la opacidad para mostrar que está deshabilitado */
+  cursor: not-allowed; /* Cambia el cursor para indicar que no se puede hacer clic */
+  pointer-events: none; /* Deshabilita completamente la interacción */
+}
+
+/* Mantener la opacidad normal cuando está activo aunque esté deshabilitado */
+.color-btn:disabled.active {
+  opacity: 1;
+  box-shadow: 0 0 24px 8px #fff;
+}
+
 #controls {
   display: flex;
   flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
@@ -94,7 +107,7 @@ h1 {
   font-size: 1rem;
   border: none;
   border-radius: 8px;
-  background: #ff9800;
+  background: #0004ff;
   color: #fff;
   cursor: pointer;
   transition: background 0.2s, opacity 0.2s;
