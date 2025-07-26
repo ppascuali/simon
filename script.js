@@ -74,6 +74,72 @@ function playVictoryMelody() {
   }, 1450);
 }
 
+// Melodía especial más larga para cuando se obtiene un récord
+function playRecordMelody() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  isVictoryMelodyPlaying = true;
+  
+  // Melodía más elaborada y larga para celebrar el récord
+  const recordMelody = [
+    // Primera parte: escala ascendente
+    colorFrequencies.green,  // DO
+    colorFrequencies.red,    // RE
+    colorFrequencies.yellow, // MI
+    colorFrequencies.blue,   // FA
+    // Segunda parte: escala descendente
+    colorFrequencies.blue,   // FA
+    colorFrequencies.yellow, // MI
+    colorFrequencies.red,    // RE
+    colorFrequencies.green,  // DO
+    // Tercera parte: acorde final (múltiples notas juntas)
+    colorFrequencies.green,  // DO
+    colorFrequencies.yellow, // MI
+    colorFrequencies.blue,   // FA
+    // Cuarta parte: repetición final
+    colorFrequencies.green,  // DO
+    colorFrequencies.red,    // RE
+    colorFrequencies.yellow, // MI
+    colorFrequencies.blue    // FA
+  ];
+  
+  let t = audioCtx.currentTime;
+  
+  // Reproduce la melodía con diferentes duraciones para crear más variedad
+  recordMelody.forEach((freq, i) => {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.value = freq;
+    
+    // Ajusta el volumen según la posición en la melodía
+    let gainValue = 1.2;
+    if (i >= 12) { // Las últimas notas son más fuertes
+      gainValue = 1.5;
+    }
+    
+    g.gain.value = gainValue;
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    
+    // Duración variable: notas más largas al final
+    let noteDuration = 0.2;
+    if (i >= 8) {
+      noteDuration = 0.3; // Notas más largas en la parte final
+    }
+    
+    o.start(t + i * 0.25); // Espaciado más amplio entre notas
+    o.stop(t + i * 0.25 + noteDuration);
+  });
+  
+  // Desbloqueo la interacción después de la melodía completa
+  // Duración total: 0.25*16 + 0.3 ≈ 4.3 segundos
+  setTimeout(() => {
+    isVictoryMelodyPlaying = false;
+  }, 4500);
+}
+
 // Referencias a los elementos del DOM
 const startBtn = document.getElementById("start-btn");
 const repeatBtn = document.getElementById("repeat-btn"); // Botón para repetir secuencia
@@ -197,7 +263,7 @@ function checkUserInput() {
       saveRecord();
       // Animación de récord y melodía de victoria
       recordSpan.classList.add('flash-record');
-      playVictoryMelody();
+      playRecordMelody(); // Usa la nueva melodía de récord
       setTimeout(() => recordSpan.classList.remove('flash-record'), 600);
     }
     
