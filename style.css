@@ -60,7 +60,22 @@ body {
   margin-bottom: 30px;
 }
 
+/* Números grandes y accesibles en los botones de colores */
+.btn-num {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 6px #000, 0 0 8px #fff8;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: 1px;
+}
 .color-btn {
+  position: relative;
   width: 100px;
   height: 100px;
   border: none;
@@ -382,28 +397,46 @@ body {
   margin-left: 4px;
 } 
 
-/* Botón de modo similar al de repetir secuencia */
+/* Botón de modo con color dinámico y palabras destacadas */
 #mode-btn {
   padding: 12px 20px;
   font-size: 1rem;
   border: none;
   border-radius: 8px;
-  background: #4CAF50;
+  background: #4CAF50; /* Verde por defecto (Normal) */
   color: #fff;
   cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+  transition: background 0.2s, color 0.2s;
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 140px;
   white-space: nowrap;
 }
-#mode-btn:hover {
-  background: #45a049;
+#mode-btn.reversa {
+  background: #ff9800; /* Naranja para Reversa */
+  color: #fff;
 }
-#mode-btn .icon {
-  font-size: 1.2em;
-  display: inline-block;
+#mode-btn .modo-normal {
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 4px #388e3c;
+}
+#mode-btn.reversa .modo-normal {
+  color: #fff8;
+  text-shadow: none;
+}
+#mode-btn .modo-reversa {
+  font-weight: bold;
+  color: #ff9800;
+  text-shadow: 0 1px 4px #b26a00;
+}
+#mode-btn.reversa .modo-reversa {
+  color: #fff;
+  text-shadow: 0 1px 4px #b26a00;
+}
+#mode-btn:hover {
+  filter: brightness(1.08);
 }
 
 /* Responsive para el botón de modo */
@@ -412,6 +445,9 @@ body {
     width: 100%;
     max-width: 200px;
     justify-content: center;
+  }
+  .btn-num {
+    font-size: 1.4rem;
   }
 }
 
@@ -486,5 +522,8 @@ body {
   
   h1 {
     font-size: 1.3rem;
+  }
+  .btn-num {
+    font-size: 1.1rem;
   }
 } 

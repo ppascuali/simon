@@ -271,27 +271,42 @@ modeBtn.addEventListener('click', () => {
     console.log('No se puede cambiar el modo durante el turno del usuario');
     return;
   }
-  
+
   // Alternar entre modo normal y reversa
   if (gameMode === 'normal') {
     gameMode = 'reversa';
   } else {
     gameMode = 'normal';
   }
-  
-  console.log('Modo cambiado a:', gameMode);
-  
-  // Actualizar el texto del botón
-  const modoTexto = gameMode.charAt(0).toUpperCase() + gameMode.slice(1);
+
+  // Actualizar la clase del botón para el color
+  if (gameMode === 'reversa') {
+    modeBtn.classList.add('reversa');
+  } else {
+    modeBtn.classList.remove('reversa');
+  }
+
+  // Actualizar el texto del botón con palabras destacadas
   modeBtn.innerHTML = `
     <span class="icon">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 3L10 17M10 3L6 7M10 3L14 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </span>
-    Modo: ${modoTexto}
+    Modo: <span class="modo-normal">Normal</span> / <span class="modo-reversa">Reversa</span>
   `;
 });
+
+// Inicializar el botón de modo en estado normal al cargar
+modeBtn.classList.remove('reversa');
+modeBtn.innerHTML = `
+  <span class="icon">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 3L10 17M10 3L6 7M10 3L14 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  Modo: <span class="modo-normal">Normal</span> / <span class="modo-reversa">Reversa</span>
+`;
 
 // Cargar nombre y récord desde localStorage al iniciar
 function loadRecord() {
