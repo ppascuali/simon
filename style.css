@@ -9,9 +9,37 @@ body {
   margin: 0;
 }
 
-h1 {
+/* Título 3D moderno para el juego Simon */
+.titulo-3d {
+  font-size: 2.8rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #4caf50 0%, #ffdc00 40%, #ff4136 70%, #0074d9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  /* Sombra múltiple para efecto 3D y brillo */
+  text-shadow:
+    2px 2px 0 #222,
+    4px 4px 0 #111,
+    0 2px 12px #fff8,
+    0 6px 24px #4caf5099;
+  /* Efecto de profundidad */
+  transform: perspective(200px) rotateX(8deg);
   margin-top: 40px;
   margin-bottom: 20px;
+  text-align: center;
+  transition: text-shadow 0.3s, transform 0.3s;
+}
+.titulo-3d:hover {
+  /* Efecto de brillo al pasar el mouse */
+  text-shadow:
+    2px 2px 0 #222,
+    4px 4px 0 #111,
+    0 2px 24px #fff,
+    0 8px 32px #ffdc0099;
+  transform: perspective(200px) rotateX(0deg) scale(1.04);
 }
 
 #game-container {
@@ -80,7 +108,7 @@ h1 {
   font-size: 1rem;
   border: none;
   border-radius: 8px;
-  background: #444;
+  background: #ff4136; /* Color rojo para el botón comenzar */
   color: #fff;
   cursor: pointer;
   transition: background 0.2s;
@@ -88,7 +116,7 @@ h1 {
 }
 
 #start-btn:hover {
-  background: #666;
+  background: #c8231a; /* Rojo más oscuro al pasar el mouse */
 }
 
 #start-btn:disabled {
@@ -130,15 +158,167 @@ h1 {
   font-size: 1.2em;
   display: inline-block;
 }
-#record.flash-record {
-  animation: flash-record 1s 2;
+/* Efectos espectaculares para superar el récord */
+.record-celebration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  animation: celebration-bg 3s ease-out;
 }
-@keyframes flash-record {
-  0% { color: #fff; background: none; }
-  20% { color: #ffd700; background: #333; }
-  40% { color: #fff; background: none; }
-  60% { color: #ffd700; background: #333; }
-  100% { color: #fff; background: none; }
+
+@keyframes celebration-bg {
+  0% { background: radial-gradient(circle, rgba(255,215,0,0.8) 0%, rgba(255,215,0,0.4) 50%, transparent 100%); }
+  50% { background: radial-gradient(circle, rgba(255,215,0,0.9) 0%, rgba(255,215,0,0.6) 50%, transparent 100%); }
+  100% { background: transparent; }
+}
+
+/* Confeti animado */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ffff00, #ff00ff, #00ffff);
+  animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Mensaje de récord superado */
+.record-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 
+    0 0 10px #ffd700,
+    0 0 20px #ffd700,
+    0 0 30px #ffd700,
+    2px 2px 4px #000;
+  z-index: 1001;
+  text-align: center;
+  animation: record-message-animation 3s ease-out;
+  pointer-events: none;
+}
+
+@keyframes record-message-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Efecto de brillo en el contenedor del juego */
+.game-container-celebration {
+  animation: game-celebration 3s ease-out;
+}
+
+@keyframes game-celebration {
+  0% { 
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 50px #ffd700,
+      0 0 100px #ffd700,
+      0 0 150px #ffd700;
+    transform: scale(1.05);
+  }
+  100% { 
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    transform: scale(1);
+  }
+}
+
+/* Animación mejorada para el récord */
+#record.flash-record {
+  animation: flash-record-enhanced 2s ease-out;
+}
+
+@keyframes flash-record-enhanced {
+  0% { 
+    color: #fff; 
+    background: none; 
+    transform: scale(1);
+  }
+  25% { 
+    color: #ffd700; 
+    background: linear-gradient(45deg, #333, #ffd700, #333);
+    transform: scale(1.1);
+    text-shadow: 0 0 20px #ffd700;
+  }
+  50% { 
+    color: #fff; 
+    background: none; 
+    transform: scale(1);
+  }
+  75% { 
+    color: #ffd700; 
+    background: linear-gradient(45deg, #333, #ffd700, #333);
+    transform: scale(1.1);
+    text-shadow: 0 0 20px #ffd700;
+  }
+  100% { 
+    color: #fff; 
+    background: none; 
+    transform: scale(1);
+  }
+}
+
+/* Efecto de ondas de sonido */
+.sound-wave {
+  position: absolute;
+  border: 2px solid #ffd700;
+  border-radius: 50%;
+  animation: sound-wave 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sound-wave {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 #game-container.shake {
@@ -201,6 +381,39 @@ h1 {
   font-size: 0.95em;
   margin-left: 4px;
 } 
+
+/* Botón de modo similar al de repetir secuencia */
+#mode-btn {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 140px;
+  white-space: nowrap;
+}
+#mode-btn:hover {
+  background: #45a049;
+}
+#mode-btn .icon {
+  font-size: 1.2em;
+  display: inline-block;
+}
+
+/* Responsive para el botón de modo */
+@media (max-width: 768px) {
+  #mode-btn {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+}
 
 /* Estilos específicos para dispositivos móviles */
 @media (max-width: 768px) {

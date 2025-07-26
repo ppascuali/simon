@@ -25,13 +25,22 @@
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-72x72.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-72x72.png">
   
-  <link rel="stylesheet" href="style.css?v=1.2.1">
+  <link rel="stylesheet" href="style.css?v=1.2.6">
 </head>
 <body>
-  <h1>Juego Simon</h1>
+  <h1 class="titulo-3d">Juego Simon</h1>
   <div id="player-controls">
     <label for="player-name">Jugador: Tu nombre <span class="required">(Obligatorio)</span></label>
     <input type="text" id="player-name" maxlength="20" placeholder="Tu nombre" />
+    <!-- Botón para alternar entre modo Normal y Reversa -->
+    <button id="mode-btn" type="button" title="Cambia el modo de juego">
+      <span class="icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 3L10 17M10 3L6 7M10 3L14 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      Modo: Normal
+    </button>
   </div>
   <div id="game-container">
     <div id="message"></div>
@@ -58,6 +67,6 @@
       <span id="record">Récord: 0</span>
     </div>
   </div>
-  <script src="script.js?v=1.4.0"></script>
+  <script src="script.js?v=1.4.1"></script>
 </body>
 </html> 

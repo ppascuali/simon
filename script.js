@@ -140,6 +140,106 @@ function playRecordMelody() {
   }, 4500);
 }
 
+// Función para crear confeti animado
+function createConfetti() {
+  const confettiContainer = document.createElement('div');
+  confettiContainer.style.position = 'fixed';
+  confettiContainer.style.top = '0';
+  confettiContainer.style.left = '0';
+  confettiContainer.style.width = '100%';
+  confettiContainer.style.height = '100%';
+  confettiContainer.style.pointerEvents = 'none';
+  confettiContainer.style.zIndex = '999';
+  
+  // Crear múltiples piezas de confeti
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.animationDelay = Math.random() * 2 + 's';
+    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    confettiContainer.appendChild(confetti);
+  }
+  
+  document.body.appendChild(confettiContainer);
+  
+  // Remover el confeti después de 4 segundos
+  setTimeout(() => {
+    document.body.removeChild(confettiContainer);
+  }, 4000);
+}
+
+// Función para crear mensaje de celebración
+function showRecordMessage() {
+  const message = document.createElement('div');
+  message.className = 'record-message';
+  message.innerHTML = `
+    <div>🏆 ¡NUEVO RÉCORD! 🏆</div>
+    <div style="font-size: 1.5rem; margin-top: 10px;">¡Felicidades!</div>
+  `;
+  
+  document.body.appendChild(message);
+  
+  // Remover el mensaje después de 3 segundos
+  setTimeout(() => {
+    if (document.body.contains(message)) {
+      document.body.removeChild(message);
+    }
+  }, 3000);
+}
+
+// Función para crear efecto de fondo dorado
+function createCelebrationBackground() {
+  const bg = document.createElement('div');
+  bg.className = 'record-celebration';
+  document.body.appendChild(bg);
+  
+  // Remover el fondo después de 3 segundos
+  setTimeout(() => {
+    if (document.body.contains(bg)) {
+      document.body.removeChild(bg);
+    }
+  }, 3000);
+}
+
+// Función para crear ondas de sonido
+function createSoundWaves() {
+  const gameContainer = document.getElementById('game-container');
+  gameContainer.style.position = 'relative';
+  
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
+      const wave = document.createElement('div');
+      wave.className = 'sound-wave';
+      gameContainer.appendChild(wave);
+      
+      setTimeout(() => {
+        if (gameContainer.contains(wave)) {
+          gameContainer.removeChild(wave);
+        }
+      }, 2000);
+    }, i * 500);
+  }
+}
+
+// Función para celebrar el récord con todos los efectos
+function celebrateRecord() {
+  // Agregar clase de celebración al contenedor del juego
+  const gameContainer = document.getElementById('game-container');
+  gameContainer.classList.add('game-container-celebration');
+  
+  // Crear todos los efectos visuales
+  createConfetti();
+  showRecordMessage();
+  createCelebrationBackground();
+  createSoundWaves();
+  
+  // Remover la clase de celebración después de 3 segundos
+  setTimeout(() => {
+    gameContainer.classList.remove('game-container-celebration');
+  }, 3000);
+}
+
 // Referencias a los elementos del DOM
 const startBtn = document.getElementById("start-btn");
 const repeatBtn = document.getElementById("repeat-btn"); // Botón para repetir secuencia
@@ -157,6 +257,41 @@ let record = 0;
 let playerName = '';
 // Variable para rastrear si se superó el récord durante el juego actual
 let recordBeatenThisGame = false;
+
+// Referencia al botón de modo
+const modeBtn = document.getElementById('mode-btn');
+
+// Inicializa el modo en 'normal' siempre
+let gameMode = 'normal';
+
+// Evento para alternar el modo de juego
+modeBtn.addEventListener('click', () => {
+  // Solo permitir cambiar el modo cuando no está esperando input del usuario
+  if (waitingForInput) {
+    console.log('No se puede cambiar el modo durante el turno del usuario');
+    return;
+  }
+  
+  // Alternar entre modo normal y reversa
+  if (gameMode === 'normal') {
+    gameMode = 'reversa';
+  } else {
+    gameMode = 'normal';
+  }
+  
+  console.log('Modo cambiado a:', gameMode);
+  
+  // Actualizar el texto del botón
+  const modoTexto = gameMode.charAt(0).toUpperCase() + gameMode.slice(1);
+  modeBtn.innerHTML = `
+    <span class="icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 3L10 17M10 3L6 7M10 3L14 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    Modo: ${modoTexto}
+  `;
+});
 
 // Cargar nombre y récord desde localStorage al iniciar
 function loadRecord() {
@@ -250,8 +385,17 @@ function handleColorClick(e) {
 // Verifica si la secuencia del usuario es correcta
 function checkUserInput() {
   const idx = userSequence.length - 1;
+  // Determinar el índice correcto según el modo
+  let correctColor;
+  if (gameMode === 'reversa') {
+    // En reversa, la secuencia se compara al revés
+    correctColor = sequence[sequence.length - 1 - idx];
+  } else {
+    // En normal, la secuencia se compara normalmente
+    correctColor = sequence[idx];
+  }
   // Si el usuario se equivoca, muestra el mensaje de pérdida en el fondo y habilita el botón de repetir
-  if (userSequence[idx] !== sequence[idx]) {
+  if (userSequence[idx] !== correctColor) {
     repeatBtn.disabled = false; // Habilita el botón de repetir
     waitingForInput = false;
     disableColorButtons(); // Deshabilita los botones de colores cuando el usuario pierde
@@ -265,6 +409,7 @@ function checkUserInput() {
       recordSpan.classList.add('flash-record');
       playRecordMelody(); // Usa la nueva melodía de récord
       setTimeout(() => recordSpan.classList.remove('flash-record'), 600);
+      celebrateRecord(); // Llamar a la función de celebración
     }
     
     // Animación de pérdida y mensaje
@@ -325,4 +470,7 @@ function checkNameInput() {
   startBtn.disabled = name.length === 0;
 }
 playerNameInput.addEventListener('input', checkNameInput);
-checkNameInput(); 
+checkNameInput();
+
+// Deshabilitar los botones de colores al cargar la página
+disableColorButtons(); 
